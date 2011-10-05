@@ -251,6 +251,19 @@ def is_task_object(a):
     return isinstance(a, Task) and a.use_task_objects
 
 
+def extra_environment_variables_callback(option, opt, value, parser):
+    """
+    """
+    #print "Im here"
+    #print option
+    #print opt
+    #print value
+    #print parser
+    key, value = value.split(":")
+    state.env[key] = value
+
+
+
 def parse_options():
     """
     Handle command-line options with optparse.OptionParser.
@@ -307,6 +320,15 @@ def parse_options():
         metavar='COMMAND',
         help="print detailed info about a given command and exit"
     )
+
+    # Extra key/value pairs we want to stick into env
+    parser.add_option('-e', '--extra-environment-variables',
+            action='callback',
+            
+            type='string',
+            callback=extra_environment_variables_callback,
+            help="some useful help goes here"
+            )
 
     #
     # Add in options which are also destined to show up as `env` vars.
